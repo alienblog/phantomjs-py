@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM python:3.5.2-alpine
 
 ENV PHANTOMJS_VERSION 2.1.1
 COPY *.patch /
@@ -53,3 +53,8 @@ RUN apk add --no-cache --virtual .build-deps \
 	&& apk del .build-deps \
 	&& rm -r /*.patch /usr/src
 
+COPY . /temp
+WORKDIR /temp
+RUN apk add --no-cache musl-dev && \
+    pip install --no-cache-dir -r requirements.txt && \
+    rm -rf /temp
